@@ -34,6 +34,17 @@ pub enum Shape {
     Rock = 1,       // Precedence Scissors -> Paper -> Rock ->
     Paper = 2,
     Scissors = 3,
+    wack = -1,
+}
+impl Shape {
+    pub fn from_int(i: i32) -> Shape {
+        match i {
+            1 => Rock,
+            2 => Paper,
+            3 => Scissors,
+            _ => panic!("")
+        }
+    }
 }
 impl FromStr for Shape {
     type Err = ParserError;
@@ -104,4 +115,33 @@ pub fn solve_part1(input: &[Play]) -> i32 {
                     .get_state()
                     .get_score()
             })
+}
+
+
+pub fn predict_move(outcome: Shape, enemy: Shape) -> Shape {
+    match outcome {
+        // yes it looks gross but it saves refactoring any of part1.
+        Scissors => Shape::from_int((enemy as i32).rem_euclid(3)+1),
+        Paper => enemy,
+        Rock => match enemy {    // was really hoping there would be a nice neat maths thing here...
+            Rock => Scissors,
+            Paper => Rock,
+            Scissors => Paper,
+            _ => panic!("")
+        },
+        _ => panic!("")
+    }
+}
+// part 2 is gonna be funky
+#[aoc(day2, part2)]
+pub fn solve_part2(input: &[Play]) -> i32 {
+    let play: Vec<Play> =input.iter()
+        .map(|mut x| {
+            // oh no.. here it comes
+            Play {
+                enemy: x.enemy,
+                player: predict_move(x.player, x.enemy),
+            }
+        }).collect();
+    solve_part1(&play)
 }
