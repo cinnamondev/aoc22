@@ -28,10 +28,47 @@ pub fn parser(input: &str) -> Vec<Vec<i32>> {
 pub fn simplify_inv(input: &Vec<Vec<i32>>) -> impl DoubleEndedIterator<Item = i32> + '_ {
     input.iter().map(|v| (*v).iter().sum::<i32>())
 }
+
+// the fast ones
 #[aoc(day1, part1)]
 pub fn solve_part1(input: &Vec<Vec<i32>>) -> i32 {
     simplify_inv(input).max().unwrap_or(-1)
 }
+
+#[aoc(day1,part2, Attempt0)]
+pub fn dep_solve_part2(input: &Vec<Vec<i32>>) -> i32 {
+    // get top 3 elves. max algo
+    // make algo that is played 3 times, once max is found remove
+    let mut sum: Vec<i32> = simplify_inv(&input).collect();// get sum of inventory
+
+    let mut ret : Vec<i32> = Vec::with_capacity(3);
+    for _ in 0..=2 {
+        let max: i32 = *sum.iter().max().unwrap_or(&-1);
+        let i_max = sum
+            .swap_remove(
+                sum
+                    .iter()
+                    .position(|x| *x == max )
+                    .unwrap_or(0) // ewwww
+            );
+        ret.push(i_max);
+    }
+    // bruh. only need sum
+    //ret.iter().map(|x| x.to_string()).collect::<Vec<String>>().join(",");
+    ret
+        .iter()
+        .sum()
+}
+
+
+
+
+
+
+
+
+
+
 
 // this looks better!!
 #[aoc(day1, part2, Attempt2)]
@@ -81,56 +118,4 @@ pub fn solve_part2(input: &Vec<Vec<i32>>) -> i32 {
 }
 
 
-#[aoc(day1,part2, Attempt0)]
-pub fn dep_solve_part2(input: &Vec<Vec<i32>>) -> i32 {
-    // get top 3 elves. max algo
-    // make algo that is played 3 times, once max is found remove
-    let mut sum: Vec<i32> = simplify_inv(&input).collect();// get sum of inventory
 
-    let mut ret : Vec<i32> = Vec::with_capacity(3);
-    for _ in 0..=2 {
-        let max: i32 = *sum.iter().max().unwrap_or(&-1);
-        let i_max = sum
-            .swap_remove(
-                sum
-                    .iter()
-                    .position(|x| *x == max )
-                    .unwrap_or(0) // ewwww
-            );
-        ret.push(i_max);
-    }
-    // bruh. only need sum
-    //ret.iter().map(|x| x.to_string()).collect::<Vec<String>>().join(",");
-    ret
-        .iter()
-        .sum()
-}
-
-#[cfg(test)]
-mod tests {
-    use super::{parser};
-
-    #[test]
-    fn test_input() {
-        let input = r#"1000
-        2000
-        3000
-
-        4000
-
-        5000
-        6000
-
-        7000
-        8000
-        9000
-
-        10000"#;
-        assert_eq!(parser(input), vec![
-            vec![2000,3000],
-            vec![4000],
-            vec![5000,6000],
-            vec![7000,8000,9000]
-        ]);
-    }
-}

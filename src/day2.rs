@@ -113,7 +113,7 @@ pub enum ParserError {
     BadPlay,
     BadInput,
 }
-#[derive(Debug, Copy, Clone)]q                              // stop trying to be fancy :(
+#[derive(Debug, Copy, Clone)]                             // stop trying to be fancy :(
 pub enum Shape {
     Rock = 1,       // Precedence Scissors -> Paper -> Rock ->
     Paper = 2,
