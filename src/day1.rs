@@ -1,7 +1,3 @@
-use std::error::Error;
-use std::iter::Map;
-use std::slice::Iter;
-
 //desc each line represents a place in inventory (arr), and each empty new line represents new elf
 // [[1000,3000,...],[],[],...,[]]
 /// 1000
