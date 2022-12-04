@@ -8,11 +8,12 @@ pub fn parser(input: &str) -> Vec<((u8,u8),(u8,u8))> {
         .map(|s| {
             let range = s.split(",")
                 .map(|s| {
-                    let n = s.split("-").collect::<Vec<&str>>();
-                    (
-                        n[0].parse::<u8>().expect("er"),
-                        n[1].parse::<u8>().expect("err")
-                    )
+                    let num = s.split("-")
+                        .map(|s| {
+                            s.parse::<u8>().expect("Uh oh")
+                        }).take(2)
+                        .collect::<Vec<u8>>();
+                    (num[0],num[1])
                 })
                 .collect::<Vec<(u8,u8)>>();
             (range[0],range[1])
