@@ -41,30 +41,30 @@ pub fn bit_range(range:(u8,u8)) -> u128 {
 
 #[aoc(day4, part1, Binary)]
 pub fn solve_part1(input: &[((u8,u8),(u8,u8))]) -> u32 {
-    let mut counter = 0;
-    for group in input { // groups of two elves
-        let elf_a = bit_range(group.0);
-        let elf_b = bit_range(group.1);
-        let overlap = elf_a & elf_b;
-        if overlap == elf_a || overlap == elf_b {
-            counter+=1;
-        }
-    }
-    counter
+    input.iter()
+        .fold(0, |acc, &range| {
+            let (a,b) = (bit_range(range.0),
+                         bit_range(range.1));
+            let res = a&b;
+            if res==a || res == b {
+                acc +1
+            } else {
+                acc
+            }
+        })
 }
 
 #[aoc(day4, part2, Binary)]
 pub fn solve_part2(input: &[((u8,u8),(u8,u8))]) -> u32 {
-    let mut counter = 0;
-    for group in input { // groups of two elves
-        let elf_a = bit_range(group.0);
-        let elf_b = bit_range(group.1);
-        let overlap = elf_a & elf_b;
-        if overlap != 0 {
-            counter+=1;
-        }
-    }
-    counter
+    input.iter()
+        .fold(0, |acc, &range| {
+            let (a,b) = (bit_range(range.0),
+                         bit_range(range.1));
+            match a & b {
+                0 => acc,
+                _ => acc+1
+            }
+        })
 }
 // Maybe faster? lets find out :)
 #[aoc(day4, part1, Logic)]
