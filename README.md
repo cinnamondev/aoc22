@@ -1,12 +1,6 @@
 # aoc22
-Advent of code! probably abandoned within the week. lol
+Advent of code 2022
 
-# Running shit
+# cargo-aoc
 
-You need cargo-aoc
-
-once installed run
-
-`cargo aoc`
-
-and boom whoa crazy
+once `cargo-aoc` is installed, run via `cargo aoc` :)
